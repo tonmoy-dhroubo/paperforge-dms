@@ -1,0 +1,13 @@
+.env
+.env.*
+!.env.example
+
+node_modules
+dist
+.next
+coverage
+
+.DS_Store
+
+data/
+uploads/

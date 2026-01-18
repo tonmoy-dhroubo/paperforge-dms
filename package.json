@@ -1,0 +1,14 @@
+{
+  "name": "paperforge-dms",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "libs/*"
+  ],
+  "scripts": {
+    "dev:up": "docker compose up -d",
+    "dev:down": "docker compose down",
+    "dev:ps": "docker compose ps",
+    "dev:logs": "docker compose logs -f --tail=200"
+  }
+}
