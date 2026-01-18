@@ -5,6 +5,8 @@ import { AuthModule } from './auth/auth.module';
 import { HealthModule } from './health/health.module';
 import { RoleModule } from './roles/role.module';
 import { typeOrmOptionsFromDatabaseUrl } from './database/typeorm.options';
+import { PermissionsModule } from './permissions/permissions.module';
+import { FoldersModule } from './folders/folders.module';
 
 @Module({
   imports: [
@@ -17,7 +19,8 @@ import { typeOrmOptionsFromDatabaseUrl } from './database/typeorm.options';
     HealthModule,
     AuthModule,
     RoleModule,
+    PermissionsModule,
+    FoldersModule,
   ],
 })
 export class AppModule {}
-

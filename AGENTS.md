@@ -102,3 +102,6 @@ Note: apiforge’s permission service is endpoint/content-type oriented; Paperfo
 - 2026-01-18: M0 validation: infra up with Postgres (5433), MinIO (bucket seeded), Elasticsearch (9200), Kafka via Redpanda (9094) with topics created (document-version, ocr, search).
 - 2026-01-18: M1 started: NestJS API scaffolded (`apps/api`) with Postgres-backed auth and dynamic roles.
 - 2026-01-18: M1 validation: API builds and smoke-tested endpoints (register/login/refresh/me, list/create roles, assign user roles).
+- 2026-01-18: M2 implemented: folder model + explicit role grants, inheritance resolution (nearest ancestor with grants), and central `(role × operational_role) -> permission` matrix.
+- 2026-01-18: M2 implemented: global permission management APIs and mapping APIs (`role_permissions`, `operational_role_permissions`).
+- 2026-01-18: M2 safety: added global `ACCESS_ALL_FOLDERS` permission (ADMIN by default) to prevent accidental admin lockout when setting explicit grants.

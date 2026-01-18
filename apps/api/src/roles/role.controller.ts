@@ -1,10 +1,10 @@
 import { Body, Controller, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { Roles } from './roles.decorator';
-import { RolesGuard } from './roles.guard';
 import { CreateRoleDto } from './dto/create-role.dto';
 import { RoleService } from './role.service';
 import { AssignUserRolesDto } from './dto/assign-user-roles.dto';
+import { RequireGlobalPermission } from '../security/require-global-permission.decorator';
+import { GlobalPermissionsGuard } from '../security/global-permissions.guard';
 
 @Controller()
 export class RoleController {
@@ -17,17 +17,16 @@ export class RoleController {
   }
 
   @Post('roles')
-  @UseGuards(AuthGuard('jwt'), RolesGuard)
-  @Roles('ADMIN')
+  @UseGuards(AuthGuard('jwt'), GlobalPermissionsGuard)
+  @RequireGlobalPermission('MANAGE_ROLES')
   createRole(@Body() body: CreateRoleDto) {
     return this.roleService.createRole(body);
   }
 
   @Put('users/:id/roles')
-  @UseGuards(AuthGuard('jwt'), RolesGuard)
-  @Roles('ADMIN')
+  @UseGuards(AuthGuard('jwt'), GlobalPermissionsGuard)
+  @RequireGlobalPermission('MANAGE_USERS')
   assignRoles(@Param('id') id: string, @Body() body: AssignUserRolesDto) {
     return this.roleService.assignRolesToUser(id, body.roles);
   }
 }
-

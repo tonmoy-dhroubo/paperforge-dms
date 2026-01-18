@@ -42,8 +42,27 @@ Endpoints:
 - `POST http://localhost:7080/api/auth/refresh`
 - `GET http://localhost:7080/api/auth/me` (Bearer token)
 - `GET http://localhost:7080/api/roles` (Bearer token)
-- `POST http://localhost:7080/api/roles` (ADMIN only)
-- `PUT http://localhost:7080/api/users/:id/roles` (ADMIN only)
+- `POST http://localhost:7080/api/roles` (`MANAGE_ROLES`)
+- `PUT http://localhost:7080/api/users/:id/roles` (`MANAGE_USERS`)
+- `GET http://localhost:7080/api/permissions` (Bearer token)
+- `POST http://localhost:7080/api/permissions` (`MANAGE_PERMISSIONS`)
+- `PUT http://localhost:7080/api/roles/:roleName/permissions` (`MANAGE_PERMISSIONS`)
+- `PUT http://localhost:7080/api/roles/:roleName/operational/:operationalRole/permissions` (`MANAGE_PERMISSIONS`)
+
+Folder APIs (all require Bearer token):
+
+- `GET http://localhost:7080/api/folders/root`
+- `GET http://localhost:7080/api/folders/:id`
+- `GET http://localhost:7080/api/folders/:id/children`
+- `POST http://localhost:7080/api/folders` (requires `FOLDER_CREATE` on parent)
+- `PATCH http://localhost:7080/api/folders/:id` (requires `FOLDER_RENAME`)
+- `POST http://localhost:7080/api/folders/:id/move` (requires `FOLDER_MOVE` + `FOLDER_CREATE` on target)
+- `DELETE http://localhost:7080/api/folders/:id` (requires `FOLDER_DELETE`)
+- `POST http://localhost:7080/api/folders/:id/restore` (requires `FOLDER_RESTORE`)
+- `PUT http://localhost:7080/api/folders/:id/grants` (requires `GRANTS_MANAGE`)
+- `GET http://localhost:7080/api/folders/:id/grants/explicit` (requires `GRANTS_MANAGE`)
+- `GET http://localhost:7080/api/folders/:id/grants/effective` (requires `FOLDER_READ`)
+- `GET http://localhost:7080/api/folders/:id/access` (debug effective permissions)
 
 ### Useful URLs
 
