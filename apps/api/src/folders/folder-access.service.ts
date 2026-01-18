@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { DataSource, Repository } from 'typeorm';
 import { Folder } from './entities/folder.entity';
 
-export const ROOT_FOLDER_ID = '00000000-0000-0000-0000-000000000001';
+export const ROOT_FOLDER_ID = '00000000-0000-4000-8000-000000000001';
 
 @Injectable()
 export class FolderAccessService {

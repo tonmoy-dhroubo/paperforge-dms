@@ -6,6 +6,8 @@ import { FolderRoleGrant } from '../folders/entities/folder-role-grant.entity';
 import { Permission } from '../permissions/entities/permission.entity';
 import { OperationalRolePermission } from '../permissions/entities/operational-role-permission.entity';
 import { RolePermission } from '../permissions/entities/role-permission.entity';
+import { Document } from '../documents/entities/document.entity';
+import { DocumentVersion } from '../documents/entities/document-version.entity';
 
 const DEFAULT_DATABASE_URL =
   'postgresql://paperforge:paperforgepass@localhost:5433/paperforge?sslmode=disable';
@@ -25,7 +27,17 @@ export function typeOrmOptionsFromDatabaseUrl(databaseUrl?: string): TypeOrmModu
     password: decodeURIComponent(url.password),
     database: url.pathname.replace(/^\//, ''),
     ssl: sslEnabled ? { rejectUnauthorized: false } : false,
-    entities: [User, Role, Permission, RolePermission, OperationalRolePermission, Folder, FolderRoleGrant],
+    entities: [
+      User,
+      Role,
+      Permission,
+      RolePermission,
+      OperationalRolePermission,
+      Folder,
+      FolderRoleGrant,
+      Document,
+      DocumentVersion,
+    ],
     // M1 uses DB init scripts; don't use TypeORM schema sync.
     synchronize: false,
     logging: false,

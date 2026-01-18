@@ -2,7 +2,7 @@
 
 -- Deterministic root id for convenience in early Phase-1.
 INSERT INTO folders (id, name, parent_id) VALUES
-  ('00000000-0000-0000-0000-000000000001', 'ROOT', NULL)
+  ('00000000-0000-4000-8000-000000000001', 'ROOT', NULL)
 ON CONFLICT (id) DO NOTHING;
 
 -- Folder / doc permissions (resource-scoped through matrix).
@@ -67,14 +67,13 @@ ON CONFLICT DO NOTHING;
 -- - HR VIEWER on ROOT
 -- - LEGAL VIEWER on ROOT
 INSERT INTO folder_role_grants (folder_id, role_id, operational_role)
-SELECT '00000000-0000-0000-0000-000000000001', r.id, 'OWNER'
+SELECT '00000000-0000-4000-8000-000000000001', r.id, 'OWNER'
 FROM roles r
 WHERE r.name = 'ADMIN'
 ON CONFLICT DO NOTHING;
 
 INSERT INTO folder_role_grants (folder_id, role_id, operational_role)
-SELECT '00000000-0000-0000-0000-000000000001', r.id, 'VIEWER'
+SELECT '00000000-0000-4000-8000-000000000001', r.id, 'VIEWER'
 FROM roles r
 WHERE r.name IN ('HR', 'LEGAL')
 ON CONFLICT DO NOTHING;
-

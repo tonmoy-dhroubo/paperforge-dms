@@ -64,6 +64,17 @@ Folder APIs (all require Bearer token):
 - `GET http://localhost:7080/api/folders/:id/grants/effective` (requires `FOLDER_READ`)
 - `GET http://localhost:7080/api/folders/:id/access` (debug effective permissions)
 
+Document APIs (all require Bearer token):
+
+- `POST http://localhost:7080/api/documents` (requires `DOC_UPLOAD` on folder; returns presigned upload URL for v1)
+- `POST http://localhost:7080/api/documents/:id/versions` (requires `DOC_UPLOAD`; returns presigned upload URL for next version)
+- `POST http://localhost:7080/api/documents/versions/commit` (requires `DOC_UPLOAD`; marks version uploaded after HEAD)
+- `GET http://localhost:7080/api/documents/:id` (requires `DOC_READ`)
+- `GET http://localhost:7080/api/documents/:id/versions` (requires `DOC_READ`)
+- `GET http://localhost:7080/api/documents/versions/:versionId/download-url` (requires `DOC_READ`; returns presigned download URL)
+- `DELETE http://localhost:7080/api/documents/:id` (requires `DOC_DELETE`)
+- `POST http://localhost:7080/api/documents/:id/restore` (requires `DOC_RESTORE`)
+
 ### Useful URLs
 
 - Postgres: `localhost:5433` (override via `POSTGRES_PORT`)

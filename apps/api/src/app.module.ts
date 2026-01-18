@@ -7,6 +7,8 @@ import { RoleModule } from './roles/role.module';
 import { typeOrmOptionsFromDatabaseUrl } from './database/typeorm.options';
 import { PermissionsModule } from './permissions/permissions.module';
 import { FoldersModule } from './folders/folders.module';
+import { DocumentsModule } from './documents/documents.module';
+import { StorageModule } from './storage/storage.module';
 
 @Module({
   imports: [
@@ -21,6 +23,8 @@ import { FoldersModule } from './folders/folders.module';
     RoleModule,
     PermissionsModule,
     FoldersModule,
+    StorageModule,
+    DocumentsModule,
   ],
 })
 export class AppModule {}

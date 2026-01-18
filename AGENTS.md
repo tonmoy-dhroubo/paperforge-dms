@@ -105,3 +105,4 @@ Note: apiforge’s permission service is endpoint/content-type oriented; Paperfo
 - 2026-01-18: M2 implemented: folder model + explicit role grants, inheritance resolution (nearest ancestor with grants), and central `(role × operational_role) -> permission` matrix.
 - 2026-01-18: M2 implemented: global permission management APIs and mapping APIs (`role_permissions`, `operational_role_permissions`).
 - 2026-01-18: M2 safety: added global `ACCESS_ALL_FOLDERS` permission (ADMIN by default) to prevent accidental admin lockout when setting explicit grants.
+- 2026-01-18: M3 implemented: documents + immutable versions with latest pointer, soft delete/restore, and MinIO (S3-compatible) signed upload/download URLs.

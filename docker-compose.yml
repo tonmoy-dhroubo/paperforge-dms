@@ -14,6 +14,8 @@ services:
       - ./db/02_auth_seed.sql:/docker-entrypoint-initdb.d/02_auth_seed.sql:ro
       - ./db/03_folders_schema.sql:/docker-entrypoint-initdb.d/03_folders_schema.sql:ro
       - ./db/04_folders_seed.sql:/docker-entrypoint-initdb.d/04_folders_seed.sql:ro
+      - ./db/05_documents_schema.sql:/docker-entrypoint-initdb.d/05_documents_schema.sql:ro
+      - ./db/06_documents_seed.sql:/docker-entrypoint-initdb.d/06_documents_seed.sql:ro
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
       interval: 5s
