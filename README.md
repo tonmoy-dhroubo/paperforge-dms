@@ -24,7 +24,7 @@ Quick checks:
 - Postgres: `localhost:5433` (override via `POSTGRES_PORT`)
 - MinIO API: `http://localhost:9000`
 - MinIO Console: `http://localhost:9001`
-- Kafka: `localhost:9094`
+- Kafka (Redpanda): `localhost:9094`
 - Elasticsearch: `http://localhost:9200`
 
 ## Repo Layout (planned)

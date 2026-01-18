@@ -32,63 +32,54 @@ services:
     image: minio/mc:latest
     depends_on:
       - minio
-    entrypoint: ["/bin/sh", "-lc"]
-    command: >
-      until mc alias set local http://minio:9000 "${MINIO_ROOT_USER:-minioadmin}" "${MINIO_ROOT_PASSWORD:-minioadmin123}"; do
-        echo "Waiting for MinIO..." && sleep 2;
-      done &&
-      mc mb -p "local/${MINIO_BUCKET:-paperforge}" || true &&
-      mc anonymous set none "local/${MINIO_BUCKET:-paperforge}" || true
-
-  zookeeper:
-    image: confluentinc/cp-zookeeper:7.6.1
-    environment:
-      ZOOKEEPER_CLIENT_PORT: 2181
-      ZOOKEEPER_TICK_TIME: 2000
-    ports:
-      - "2181:2181"
-    healthcheck:
-      test: ["CMD-SHELL", "echo ruok | nc -w 2 localhost 2181 | grep imok >/dev/null 2>&1"]
-      interval: 10s
-      timeout: 5s
-      retries: 20
+    entrypoint:
+      [
+        "/bin/sh",
+        "-c",
+        "until mc alias set local http://minio:9000 \"${MINIO_ROOT_USER:-minioadmin}\" \"${MINIO_ROOT_PASSWORD:-minioadmin123}\"; do echo 'Waiting for MinIO...' && sleep 2; done; mc mb -p \"local/${MINIO_BUCKET:-paperforge}\" || true; mc anonymous set none \"local/${MINIO_BUCKET:-paperforge}\" || true"
+      ]
 
   kafka:
-    image: confluentinc/cp-kafka:7.6.1
+    image: redpandadata/redpanda:latest
+    container_name: paperforge-dms-kafka-1
+    command:
+      - redpanda
+      - start
+      - --overprovisioned
+      - --smp
+      - "1"
+      - --memory
+      - 1G
+      - --reserve-memory
+      - 0M
+      - --node-id
+      - "0"
+      - --check=false
+      - --kafka-addr
+      - PLAINTEXT://0.0.0.0:9092,PLAINTEXT_HOST://0.0.0.0:${KAFKA_BROKER_HOST_PORT:-9094}
+      - --advertise-kafka-addr
+      - PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:${KAFKA_BROKER_HOST_PORT:-9094}
     ports:
       - "${KAFKA_BROKER_HOST_PORT:-9094}:9094"
-    environment:
-      KAFKA_BROKER_ID: 1
-      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092,PLAINTEXT_HOST://0.0.0.0:9094
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:${KAFKA_BROKER_HOST_PORT:-9094}
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
-      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "false"
+    volumes:
+      - redpanda-data:/var/lib/redpanda/data
     healthcheck:
-      test: ["CMD-SHELL", "kafka-topics --bootstrap-server localhost:9092 --list >/dev/null 2>&1"]
+      test: ["CMD-SHELL", "rpk cluster health --api-urls localhost:9644 >/dev/null 2>&1"]
       interval: 10s
       timeout: 10s
-      retries: 20
-    depends_on:
-      - zookeeper
+      retries: 30
 
   kafka-init:
-    image: confluentinc/cp-kafka:7.6.1
+    image: redpandadata/redpanda:latest
     depends_on:
-      - kafka
-    entrypoint: ["/bin/sh", "-lc"]
-    command: >
-      until kafka-topics --bootstrap-server kafka:9092 --list >/dev/null 2>&1; do
-        echo "Waiting for Kafka..." && sleep 2;
-      done &&
-      kafka-topics --bootstrap-server kafka:9092 --create --if-not-exists --topic paperforge.document-version.created --partitions 3 --replication-factor 1 &&
-      kafka-topics --bootstrap-server kafka:9092 --create --if-not-exists --topic paperforge.ocr.completed --partitions 3 --replication-factor 1 &&
-      kafka-topics --bootstrap-server kafka:9092 --create --if-not-exists --topic paperforge.ocr.dlq --partitions 1 --replication-factor 1 &&
-      kafka-topics --bootstrap-server kafka:9092 --create --if-not-exists --topic paperforge.search.index --partitions 3 --replication-factor 1 &&
-      kafka-topics --bootstrap-server kafka:9092 --create --if-not-exists --topic paperforge.search.dlq --partitions 1 --replication-factor 1
-
+      kafka:
+        condition: service_healthy
+    entrypoint:
+      [
+        "/bin/sh",
+        "-c",
+        "rpk topic create paperforge.document-version.created paperforge.ocr.completed paperforge.search.index --brokers kafka:9092 --replicas 1 --partitions 3 && rpk topic create paperforge.ocr.dlq paperforge.search.dlq --brokers kafka:9092 --replicas 1 --partitions 1 || true"
+      ]
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:8.12.2
     environment:
@@ -121,3 +112,4 @@ volumes:
   pgdata:
   miniodata:
   esdata:
+  redpanda-data:

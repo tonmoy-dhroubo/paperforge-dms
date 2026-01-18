@@ -99,4 +99,4 @@ Note: apiforge’s permission service is endpoint/content-type oriented; Paperfo
 - 2026-01-18: Decisions confirmed — grants are role-only; folder inherits ancestor permissions when no explicit grants; PostgreSQL accepted.
 - 2026-01-18: Reuse assessment completed for `apiforge-headless-cms-nestjs` (auth, shared libs, gateway pattern).
 - 2026-01-18: M0 scaffolding added (repo layout + `docker-compose.yml`, `.env.example`, dev scripts).
-- 2026-01-18: M0 validation: `docker compose` config validated; Postgres + Elasticsearch verified booting locally (Kafka/MinIO pulls may fail in some environments due to DNS/CDN issues).
+- 2026-01-18: M0 validation: infra up with Postgres (5433), MinIO (bucket seeded), Elasticsearch (9200), Kafka via Redpanda (9094) with topics created (document-version, ocr, search).
