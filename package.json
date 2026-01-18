@@ -27,6 +27,8 @@
     "@types/bcrypt": "^5.0.2",
     "@types/node": "^22.10.10",
     "@types/passport-jwt": "^4.0.1",
+    "ts-node": "^10.9.2",
+    "ts-node-dev": "^2.0.0",
     "tsx": "^4.19.2",
     "typescript": "^5.6.3"
   },
@@ -35,7 +37,7 @@
     "dev:down": "docker compose down",
     "dev:ps": "docker compose ps",
     "dev:logs": "docker compose logs -f --tail=200",
-    "api:dev": "tsx watch apps/api/src/main.ts",
+    "api:dev": "ts-node-dev --respawn --transpile-only --project apps/api/tsconfig.json apps/api/src/main.ts",
     "api:build": "tsc -p apps/api/tsconfig.build.json",
     "api:start": "node dist/apps/api/main.js",
     "api:typecheck": "tsc -p apps/api/tsconfig.build.json --noEmit"
