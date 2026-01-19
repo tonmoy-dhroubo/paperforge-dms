@@ -112,6 +112,7 @@ Note: apiforge’s permission service is endpoint/content-type oriented; Paperfo
 - 2026-01-19: M5 implemented (backend): search indexer consumes `paperforge.search.index` and indexes per page/chunk into Elasticsearch with highlights.
 - 2026-01-19: M5 implemented (backend): `/api/search` endpoint with folder/filename filters and latest-versions-by-default behavior.
 - 2026-01-19: M5 implemented (web): Next.js UI with centralized theming, login, folder browser, upload, search, and preview.
+- 2026-01-19: Post-milestone hardening: Phase-1 QA checklist and ops runbook added (`docs/qa-checklist.md`, `docs/runbook.md`).
 - 2026-01-19: M5 implemented (web): folder management UI (create/rename/move/delete/restore) + grants view/edit.
 - 2026-01-19: M5 implemented (web): document actions (delete/restore, versions list, OCR retry) + upload progress + drag-drop zone.
 - 2026-01-19: M5 implemented (web): global search page and top-nav entry.

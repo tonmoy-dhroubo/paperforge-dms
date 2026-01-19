@@ -119,3 +119,8 @@ npm run web:dev
 - `libs/`: shared libraries
 - `db/`: Postgres init scripts (dev)
 - `scripts/`: developer scripts
+
+## Hardening Docs
+
+- QA checklist: `docs/qa-checklist.md`
+- Ops runbook: `docs/runbook.md`
