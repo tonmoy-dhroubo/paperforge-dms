@@ -121,11 +121,16 @@ services:
       KAFKA_TOPIC_VERSION_CREATED: paperforge.document-version.created
       KAFKA_TOPIC_OCR_COMPLETED: paperforge.ocr.completed
       KAFKA_TOPIC_OCR_DLQ: paperforge.ocr.dlq
+      KAFKA_TOPIC_SEARCH_INDEX: paperforge.search.index
+      KAFKA_TOPIC_SEARCH_DLQ: paperforge.search.dlq
+      ELASTICSEARCH_URL: http://elasticsearch:9200
+      ELASTICSEARCH_INDEX: ${ELASTICSEARCH_INDEX:-paperforge_pages_v1}
     depends_on:
       - postgres
       - minio
       - kafka
       - kafka-init
+      - elasticsearch
 
   api:
     build:
@@ -152,6 +157,8 @@ services:
       KAFKA_TOPIC_VERSION_CREATED: paperforge.document-version.created
       KAFKA_TOPIC_OCR_COMPLETED: paperforge.ocr.completed
       KAFKA_TOPIC_OCR_DLQ: paperforge.ocr.dlq
+      ELASTICSEARCH_URL: http://elasticsearch:9200
+      ELASTICSEARCH_INDEX: ${ELASTICSEARCH_INDEX:-paperforge_pages_v1}
     ports:
       - "${API_PORT:-7080}:7080"
     depends_on:
@@ -159,6 +166,7 @@ services:
       - minio
       - kafka
       - kafka-init
+      - elasticsearch
 
   # Optional (uncomment if you want a UI for Elasticsearch)
   # kibana:

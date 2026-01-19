@@ -1,22 +1,20 @@
 import { Injectable, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Kafka, logLevel } from 'kafkajs';
-import { OcrService } from './ocr.service';
+import { SearchIndexerService } from './search-indexer.service';
 
-type OcrMessage = {
+type SearchMessage = {
   versionId: string;
-  documentId?: string;
-  folderId?: string;
 };
 
 @Injectable()
-export class OcrConsumer implements OnModuleInit, OnModuleDestroy {
+export class SearchConsumer implements OnModuleInit, OnModuleDestroy {
   private consumer: any;
   private producer: any;
 
   constructor(
     private readonly config: ConfigService,
-    private readonly ocr: OcrService,
+    private readonly indexer: SearchIndexerService,
   ) {}
 
   async onModuleInit() {
@@ -32,11 +30,11 @@ export class OcrConsumer implements OnModuleInit, OnModuleDestroy {
     });
 
     this.consumer = kafka.consumer({
-      groupId: this.config.get<string>('KAFKA_GROUP_ID_OCR') || 'paperforge-ocr-worker',
+      groupId: this.config.get<string>('KAFKA_GROUP_ID_SEARCH') || 'paperforge-search-indexer',
     });
     this.producer = kafka.producer();
 
-    const topic = this.config.get<string>('KAFKA_TOPIC_VERSION_CREATED') || 'paperforge.document-version.created';
+    const topic = this.config.get<string>('KAFKA_TOPIC_SEARCH_INDEX') || 'paperforge.search.index';
     await this.consumer.connect();
     await this.producer.connect();
     await this.consumer.subscribe({ topic, fromBeginning: false });
@@ -45,7 +43,7 @@ export class OcrConsumer implements OnModuleInit, OnModuleDestroy {
       eachMessage: async ({ message }: any) => {
         if (!message?.value) return;
         const raw = message.value.toString('utf8');
-        let payload: OcrMessage;
+        let payload: SearchMessage;
         try {
           payload = JSON.parse(raw);
         } catch {
@@ -56,19 +54,11 @@ export class OcrConsumer implements OnModuleInit, OnModuleDestroy {
         if (!versionId) return;
 
         try {
-          await this.ocr.processVersion(versionId);
-          await this.producer.send({
-            topic: this.config.get<string>('KAFKA_TOPIC_OCR_COMPLETED') || 'paperforge.ocr.completed',
-            messages: [{ value: JSON.stringify({ versionId }) }],
-          });
-          await this.producer.send({
-            topic: this.config.get<string>('KAFKA_TOPIC_SEARCH_INDEX') || 'paperforge.search.index',
-            messages: [{ value: JSON.stringify({ versionId }) }],
-          });
+          await this.indexer.indexVersion(versionId);
         } catch (error: any) {
-          const errMsg = error?.message ? String(error.message) : 'OCR failed';
+          const errMsg = error?.message ? String(error.message) : 'Search indexing failed';
           await this.producer.send({
-            topic: this.config.get<string>('KAFKA_TOPIC_OCR_DLQ') || 'paperforge.ocr.dlq',
+            topic: this.config.get<string>('KAFKA_TOPIC_SEARCH_DLQ') || 'paperforge.search.dlq',
             messages: [{ value: JSON.stringify({ versionId, error: errMsg }) }],
           });
         }
@@ -81,3 +71,4 @@ export class OcrConsumer implements OnModuleInit, OnModuleDestroy {
     await this.producer?.disconnect().catch(() => null);
   }
 }
+

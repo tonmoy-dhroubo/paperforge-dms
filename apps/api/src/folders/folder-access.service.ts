@@ -116,6 +116,11 @@ export class FolderAccessService {
     return permissions.includes(permissionName.trim().toUpperCase());
   }
 
+  async userHasGlobalFolderBypass(userRoleNames: string[]) {
+    const roleNames = userRoleNames.map((r) => r.trim().toUpperCase()).filter(Boolean);
+    return this.hasGlobalFolderBypass(roleNames);
+  }
+
   private async hasGlobalFolderBypass(roleNames: string[]) {
     if (roleNames.length === 0) return false;
     const rows = await this.dataSource.query(

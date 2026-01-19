@@ -9,6 +9,7 @@ import { PermissionsModule } from './permissions/permissions.module';
 import { FoldersModule } from './folders/folders.module';
 import { DocumentsModule } from './documents/documents.module';
 import { StorageModule } from './storage/storage.module';
+import { SearchModule } from './search/search.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { StorageModule } from './storage/storage.module';
     FoldersModule,
     StorageModule,
     DocumentsModule,
+    SearchModule,
   ],
 })
 export class AppModule {}

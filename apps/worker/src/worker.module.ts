@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { OcrConsumer } from './workers/ocr.consumer';
 import { OcrModule } from './workers/ocr.module';
 import { typeOrmOptionsFromDatabaseUrl } from './database/typeorm.options';
+import { SearchModule } from './search/search.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { typeOrmOptionsFromDatabaseUrl } from './database/typeorm.options';
         typeOrmOptionsFromDatabaseUrl(config.get<string>('DATABASE_URL')),
     }),
     OcrModule,
+    SearchModule,
   ],
   providers: [OcrConsumer],
 })

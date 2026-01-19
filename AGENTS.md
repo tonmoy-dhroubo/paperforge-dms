@@ -109,3 +109,5 @@ Note: apiforge’s permission service is endpoint/content-type oriented; Paperfo
 - 2026-01-19: M4 implemented: OCR persistence (`document_version_pages`, timestamps/errors) + OCR worker (Kafka consumer + retries/DLQ) with Poppler/Tesseract in container.
 - 2026-01-19: M4 implemented: version commit emits `paperforge.document-version.created`; API exposes OCR status/text (`/ocr`, `/ocr/pages`) + retry endpoint.
 - 2026-01-19: M4 validation: end-to-end upload → commit → OCR completes and persists extracted text per page.
+- 2026-01-19: M5 implemented (backend): search indexer consumes `paperforge.search.index` and indexes per page/chunk into Elasticsearch with highlights.
+- 2026-01-19: M5 implemented (backend): `/api/search` endpoint with folder/filename filters and latest-versions-by-default behavior.

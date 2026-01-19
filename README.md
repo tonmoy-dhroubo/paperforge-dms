@@ -73,6 +73,12 @@ Document APIs (all require Bearer token):
 - `DELETE http://localhost:7080/api/documents/:id` (requires `DOC_DELETE`)
 - `POST http://localhost:7080/api/documents/:id/restore` (requires `DOC_RESTORE`)
 
+Search APIs (all require Bearer token):
+
+- `GET http://localhost:7080/api/search?q=...&folderId=...` (latest versions by default; highlights)
+- `GET http://localhost:7080/api/search?q=...&folderId=...&filename=...` (exact filename filter)
+- `GET http://localhost:7080/api/search?q=...&allVersions=true` (requires `ACCESS_ALL_FOLDERS`)
+
 ### Useful URLs
 
 - Postgres: `localhost:5433` (override via `POSTGRES_PORT`)
