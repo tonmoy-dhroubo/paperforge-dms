@@ -1,0 +1,97 @@
+.wrap {
+  max-width: 1100px;
+}
+
+.form {
+  display: grid;
+  gap: 12px;
+}
+
+.label {
+  display: grid;
+  gap: 6px;
+  color: var(--pf-text-dim);
+  font-weight: 800;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+}
+
+.checkbox {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  color: var(--pf-text-dim);
+  font-weight: 700;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.results {
+  margin-top: 16px;
+  display: grid;
+  gap: 10px;
+}
+
+.hit {
+  border: 1px solid var(--pf-border);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.03);
+  padding: 12px;
+  display: grid;
+  gap: 8px;
+}
+
+.hitTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.hitFilename {
+  font-weight: 900;
+}
+
+.snip {
+  color: var(--pf-text-dim);
+  font-weight: 650;
+}
+
+.hitMeta {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  color: var(--pf-text-faint);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 10px;
+}
+
+.mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  text-transform: none;
+  letter-spacing: 0.04em;
+}
+
+.dot {
+  width: 3px;
+  height: 3px;
+  border-radius: 999px;
+  background: var(--pf-border-strong);
+}
+
+.error {
+  border: 1px solid rgba(255, 91, 91, 0.35);
+  background: rgba(255, 91, 91, 0.08);
+  color: var(--pf-text);
+  border-radius: 14px;
+  padding: 10px 12px;
+  font-weight: 800;
+  margin-top: 12px;
+}
+

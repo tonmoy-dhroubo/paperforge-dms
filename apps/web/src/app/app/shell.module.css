@@ -56,6 +56,23 @@
   justify-content: flex-end;
 }
 
+.navLink {
+  border: 1px solid var(--pf-border);
+  border-radius: 999px;
+  padding: 8px 12px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-size: 11px;
+  color: var(--pf-text-dim);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.navLink:hover {
+  border-color: var(--pf-border-strong);
+  color: var(--pf-text);
+}
+
 .inlineLink {
   all: unset;
   cursor: pointer;
@@ -137,4 +154,3 @@
     top: auto;
   }
 }
-

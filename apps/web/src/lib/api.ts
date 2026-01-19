@@ -52,6 +52,18 @@ export const api = {
   rootFolder: () => apiFetch<any>('/folders/root'),
   getFolder: (folderId: string) => apiFetch<any>(`/folders/${encodeURIComponent(folderId)}`),
   folderChildren: (folderId: string) => apiFetch<any>(`/folders/${folderId}/children`),
+  createFolder: (body: { name: string; parentId?: string }) =>
+    apiFetch<any>('/folders', { method: 'POST', body: JSON.stringify(body) }),
+  renameFolder: (id: string, body: { name: string }) =>
+    apiFetch<any>(`/folders/${id}`, { method: 'PATCH', body: JSON.stringify(body) }),
+  moveFolder: (id: string, body: { newParentId: string }) =>
+    apiFetch<any>(`/folders/${id}/move`, { method: 'POST', body: JSON.stringify(body) }),
+  deleteFolder: (id: string) => apiFetch<any>(`/folders/${id}`, { method: 'DELETE' }),
+  restoreFolder: (id: string) => apiFetch<any>(`/folders/${id}/restore`, { method: 'POST' }),
+  folderGrantsExplicit: (id: string) => apiFetch<any>(`/folders/${id}/grants/explicit`),
+  folderGrantsEffective: (id: string) => apiFetch<any>(`/folders/${id}/grants/effective`),
+  setFolderGrants: (id: string, body: { grants: Array<{ roleName: string; operationalRole: string }> }) =>
+    apiFetch<any>(`/folders/${id}/grants`, { method: 'PUT', body: JSON.stringify(body) }),
 
   listDocuments: (folderId: string) => apiFetch<any>(`/documents?folderId=${encodeURIComponent(folderId)}`),
 
@@ -63,6 +75,9 @@ export const api = {
 
   docVersions: (documentId: string) => apiFetch<any>(`/documents/${documentId}/versions`),
   downloadUrl: (versionId: string) => apiFetch<any>(`/documents/versions/${versionId}/download-url`),
+  deleteDocument: (documentId: string) => apiFetch<any>(`/documents/${documentId}`, { method: 'DELETE' }),
+  restoreDocument: (documentId: string) => apiFetch<any>(`/documents/${documentId}/restore`, { method: 'POST' }),
+  ocrRetry: (versionId: string) => apiFetch<any>(`/documents/versions/${versionId}/ocr/retry`, { method: 'POST' }),
 
   ocrStatus: (versionId: string) => apiFetch<any>(`/documents/versions/${versionId}/ocr`),
   ocrPages: (versionId: string) => apiFetch<any>(`/documents/versions/${versionId}/ocr/pages`),

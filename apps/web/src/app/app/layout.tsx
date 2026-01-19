@@ -47,6 +47,9 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         </Link>
 
         <div className={styles.topbarRight}>
+          <Link href="/app/search" className={styles.navLink}>
+            Search
+          </Link>
           <Pill>
             Theme: {themeName}{' '}
             <button className={styles.inlineLink} onClick={toggle}>
@@ -77,4 +80,3 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
     </div>
   );
 }
-
