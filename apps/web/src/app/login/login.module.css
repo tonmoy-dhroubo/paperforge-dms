@@ -1,0 +1,131 @@
+.wrap {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: minmax(340px, 560px);
+  justify-content: center;
+  align-content: center;
+  gap: 20px;
+  padding: 28px 16px;
+}
+
+.hero {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 0 2px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.mark {
+  width: 46px;
+  height: 46px;
+  border-radius: 14px;
+  border: 1px solid var(--pf-border);
+  background: linear-gradient(180deg, rgba(85, 214, 194, 0.18), rgba(255, 255, 255, 0.06));
+  position: relative;
+  box-shadow: var(--pf-shadow-soft);
+  overflow: hidden;
+}
+
+.markDot {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: var(--pf-accent);
+  left: 10px;
+  top: 10px;
+  box-shadow: 0 0 0 6px rgba(85, 214, 194, 0.10);
+}
+
+.markLine {
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  bottom: 12px;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.35);
+}
+
+.title {
+  font-family: var(--pf-font-display);
+  font-size: 34px;
+  letter-spacing: 0.2px;
+  line-height: 1.05;
+}
+
+.subtitle {
+  color: var(--pf-text-dim);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  font-size: 11px;
+  margin-top: 4px;
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.card {
+  margin-top: 6px;
+}
+
+.form {
+  display: grid;
+  gap: 12px;
+}
+
+.label {
+  display: grid;
+  gap: 8px;
+  font-weight: 700;
+  color: var(--pf-text-dim);
+  letter-spacing: 0.02em;
+}
+
+.actions {
+  display: grid;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.error {
+  border: 1px solid rgba(255, 91, 91, 0.35);
+  background: rgba(255, 91, 91, 0.08);
+  color: var(--pf-text);
+  border-radius: 14px;
+  padding: 10px 12px;
+  font-weight: 700;
+}
+
+.rightHint {
+  color: var(--pf-text-faint);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 12px;
+}
+
+.inlineLink {
+  all: unset;
+  cursor: pointer;
+  color: var(--pf-accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+

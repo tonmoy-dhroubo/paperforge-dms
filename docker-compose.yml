@@ -168,6 +168,19 @@ services:
       - kafka-init
       - elasticsearch
 
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+      network: host
+    environment:
+      PAPERFORGE_API_INTERNAL_URL: http://api:7080/api
+      NEXT_TELEMETRY_DISABLED: "1"
+    ports:
+      - "${WEB_PORT:-3000}:3000"
+    depends_on:
+      - api
+
   # Optional (uncomment if you want a UI for Elasticsearch)
   # kibana:
   #   image: docker.elastic.co/kibana/kibana:8.12.2

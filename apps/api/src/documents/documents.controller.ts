@@ -16,6 +16,11 @@ export class DocumentsController {
     return this.documents.createDocumentWithUpload(user, dto);
   }
 
+  @Get()
+  list(@CurrentUser() user: any, @Query('folderId') folderId?: string) {
+    return this.documents.listDocumentsInFolderForRead(user, folderId);
+  }
+
   @Get(':id')
   get(@CurrentUser() user: any, @Param('id') id: string) {
     return this.documents.getDocumentForRead(user, id);

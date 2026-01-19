@@ -47,6 +47,9 @@
     "worker:dev": "ts-node-dev --respawn --transpile-only --project apps/worker/tsconfig.json apps/worker/src/main.ts",
     "worker:build": "tsc -p apps/worker/tsconfig.build.json",
     "worker:start": "node dist/apps/worker/main.js",
-    "worker:typecheck": "tsc -p apps/worker/tsconfig.build.json --noEmit"
+    "worker:typecheck": "tsc -p apps/worker/tsconfig.build.json --noEmit",
+    "web:dev": "npm -w @paperforge/web run dev",
+    "web:build": "npm -w @paperforge/web run build",
+    "web:start": "npm -w @paperforge/web run start"
   }
 }

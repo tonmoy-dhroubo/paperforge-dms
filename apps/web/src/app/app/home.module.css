@@ -1,0 +1,81 @@
+.grid {
+  display: grid;
+  gap: 16px;
+  max-width: 1120px;
+}
+
+.hero {
+  padding: 14px 6px 6px 6px;
+}
+
+.hTitle {
+  font-family: var(--pf-font-display);
+  font-size: 42px;
+  letter-spacing: 0.2px;
+  line-height: 1.02;
+}
+
+.hSub {
+  margin-top: 10px;
+  color: var(--pf-text-dim);
+  font-weight: 650;
+  max-width: 60ch;
+}
+
+.hBadges {
+  margin-top: 14px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.card {
+  border: 1px solid var(--pf-border);
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: var(--pf-radius-md);
+  padding: 14px 14px;
+  box-shadow: var(--pf-shadow-soft);
+  transition: transform 120ms ease, border-color 120ms ease, background 120ms ease;
+}
+
+.card:hover {
+  transform: translateY(-1px);
+  border-color: var(--pf-border-strong);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.cardTitle {
+  font-family: var(--pf-font-display);
+  font-weight: 800;
+  letter-spacing: 0.1px;
+  font-size: 18px;
+}
+
+.cardBody {
+  margin-top: 6px;
+  color: var(--pf-text-dim);
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.steps {
+  margin: 0;
+  padding-left: 18px;
+  color: var(--pf-text-dim);
+  font-weight: 650;
+  display: grid;
+  gap: 8px;
+}
+
+@media (max-width: 860px) {
+  .cards {
+    grid-template-columns: 1fr;
+  }
+}
+

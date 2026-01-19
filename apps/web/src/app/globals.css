@@ -1,0 +1,72 @@
+:root {
+  --pf-next-font-body: "IBM Plex Sans";
+  --pf-next-font-display: "Fraunces";
+  --pf-font-body: ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif;
+  --pf-font-display: ui-serif, Georgia, serif;
+
+  --pf-radius-sm: 10px;
+  --pf-radius-md: 16px;
+  --pf-radius-lg: 22px;
+
+  --pf-bg: #0e1114;
+  --pf-bg-elev: rgba(255, 255, 255, 0.04);
+  --pf-bg-elev-2: rgba(255, 255, 255, 0.07);
+  --pf-border: rgba(255, 255, 255, 0.10);
+  --pf-border-strong: rgba(255, 255, 255, 0.18);
+  --pf-text: rgba(255, 255, 255, 0.92);
+  --pf-text-dim: rgba(255, 255, 255, 0.62);
+  --pf-text-faint: rgba(255, 255, 255, 0.42);
+
+  --pf-accent: #55d6c2;
+  --pf-accent-2: #f4d06f;
+  --pf-danger: #ff5b5b;
+
+  --pf-shadow: 0 16px 55px rgba(0, 0, 0, 0.45);
+  --pf-shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.28);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  color: var(--pf-text);
+  font-family: var(--pf-font-body);
+  background: radial-gradient(1200px 700px at 20% 10%, rgba(85, 214, 194, 0.12), transparent 65%),
+    radial-gradient(900px 600px at 80% 30%, rgba(244, 208, 111, 0.10), transparent 60%),
+    radial-gradient(900px 900px at 40% 100%, rgba(255, 255, 255, 0.05), transparent 60%),
+    var(--pf-bg);
+}
+
+/* subtle paper-grain without images */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.08;
+  background-image:
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.035) 0, rgba(255, 255, 255, 0.035) 1px, transparent 1px, transparent 3px),
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.02) 0, rgba(255, 255, 255, 0.02) 1px, transparent 1px, transparent 4px);
+  mix-blend-mode: overlay;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+::selection {
+  background: rgba(85, 214, 194, 0.25);
+}

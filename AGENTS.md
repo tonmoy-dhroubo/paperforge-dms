@@ -111,3 +111,4 @@ Note: apiforge’s permission service is endpoint/content-type oriented; Paperfo
 - 2026-01-19: M4 validation: end-to-end upload → commit → OCR completes and persists extracted text per page.
 - 2026-01-19: M5 implemented (backend): search indexer consumes `paperforge.search.index` and indexes per page/chunk into Elasticsearch with highlights.
 - 2026-01-19: M5 implemented (backend): `/api/search` endpoint with folder/filename filters and latest-versions-by-default behavior.
+- 2026-01-19: M5 implemented (web): Next.js UI with centralized theming, login, folder browser, upload, search, and preview.

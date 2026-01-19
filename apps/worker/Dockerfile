@@ -19,6 +19,7 @@ ENV npm_config_update_notifier=false
 COPY package.json package-lock.json tsconfig.json ./
 COPY apps/api/package.json apps/api/tsconfig.json apps/api/tsconfig.build.json ./apps/api/
 COPY apps/worker/package.json apps/worker/tsconfig.json apps/worker/tsconfig.build.json ./apps/worker/
+COPY apps/web/package.json ./apps/web/package.json
 COPY apps/worker/src ./apps/worker/src
 
 RUN printf "nameserver 1.1.1.1\nnameserver 8.8.8.8\n" > /etc/resolv.conf \

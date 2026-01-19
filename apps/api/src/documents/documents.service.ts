@@ -39,6 +39,33 @@ export class DocumentsService {
     });
   }
 
+  async listDocumentsInFolderForRead(user: { sub: string; roles: string[] }, folderId?: string) {
+    const fid = (folderId || '').trim();
+    if (!fid) throw new BadRequestException('folderId is required');
+    await this.folderAccess.assertFolderExists(fid);
+    const allowed = await this.folderAccess.userHasFolderPermission(fid, user.roles, 'DOC_READ');
+    if (!allowed) throw new ForbiddenException('Insufficient permissions');
+
+    const documents = await this.docRepo.find({
+      where: { folderId: fid },
+      order: { createdAt: 'DESC' },
+      take: 200,
+    });
+
+    return {
+      folderId: fid,
+      documents: documents.map((d) => ({
+        id: d.id,
+        folderId: d.folderId,
+        title: d.title,
+        latestVersionId: d.latestVersionId,
+        isDeleted: d.isDeleted,
+        createdAt: d.createdAt,
+        updatedAt: d.updatedAt,
+      })),
+    };
+  }
+
   async getDocumentForRead(user: { sub: string; roles: string[] }, documentId: string) {
     const doc = await this.getDocument(documentId);
     if (doc.isDeleted) throw new BadRequestException('Document is deleted');

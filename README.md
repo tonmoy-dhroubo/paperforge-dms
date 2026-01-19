@@ -62,6 +62,7 @@ Folder APIs (all require Bearer token):
 Document APIs (all require Bearer token):
 
 - `POST http://localhost:7080/api/documents` (requires `DOC_UPLOAD` on folder; returns presigned upload URL for v1)
+- `GET http://localhost:7080/api/documents?folderId=...` (requires `DOC_READ`; list documents in folder)
 - `POST http://localhost:7080/api/documents/:id/versions` (requires `DOC_UPLOAD`; returns presigned upload URL for next version)
 - `POST http://localhost:7080/api/documents/versions/commit` (requires `DOC_UPLOAD`; marks version uploaded after HEAD)
 - `GET http://localhost:7080/api/documents/:id` (requires `DOC_READ`)
@@ -79,6 +80,23 @@ Search APIs (all require Bearer token):
 - `GET http://localhost:7080/api/search?q=...&folderId=...&filename=...` (exact filename filter)
 - `GET http://localhost:7080/api/search?q=...&allVersions=true` (requires `ACCESS_ALL_FOLDERS`)
 
+## Web (M5)
+
+Run the web app via Docker:
+
+```bash
+npm run dev:up
+```
+
+Open: `http://localhost:3000`
+
+Local dev (host):
+
+```bash
+npm install
+npm run web:dev
+```
+
 ### Useful URLs
 
 - Postgres: `localhost:5433` (override via `POSTGRES_PORT`)
@@ -86,6 +104,7 @@ Search APIs (all require Bearer token):
 - MinIO Console: `http://localhost:9001`
 - Kafka (Redpanda): `localhost:9094`
 - Elasticsearch: `http://localhost:9200`
+- Web UI: `http://localhost:3000`
 
 ### Notes
 
