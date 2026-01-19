@@ -1,0 +1,7 @@
+{
+  "name": "@paperforge/worker",
+  "private": true,
+  "main": "dist/main.js",
+  "types": "dist/main.d.ts"
+}
+

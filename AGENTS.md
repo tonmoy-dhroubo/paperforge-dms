@@ -106,3 +106,6 @@ Note: apiforge’s permission service is endpoint/content-type oriented; Paperfo
 - 2026-01-18: M2 implemented: global permission management APIs and mapping APIs (`role_permissions`, `operational_role_permissions`).
 - 2026-01-18: M2 safety: added global `ACCESS_ALL_FOLDERS` permission (ADMIN by default) to prevent accidental admin lockout when setting explicit grants.
 - 2026-01-18: M3 implemented: documents + immutable versions with latest pointer, soft delete/restore, and MinIO (S3-compatible) signed upload/download URLs.
+- 2026-01-19: M4 implemented: OCR persistence (`document_version_pages`, timestamps/errors) + OCR worker (Kafka consumer + retries/DLQ) with Poppler/Tesseract in container.
+- 2026-01-19: M4 implemented: version commit emits `paperforge.document-version.created`; API exposes OCR status/text (`/ocr`, `/ocr/pages`) + retry endpoint.
+- 2026-01-19: M4 validation: end-to-end upload → commit → OCR completes and persists extracted text per page.

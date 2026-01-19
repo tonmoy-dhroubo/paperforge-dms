@@ -4,11 +4,10 @@ Phase-1 MVP: internal DMS with nested folders, PDF uploads + versioning, async O
 
 ## Dev (M0)
 
-Start infrastructure (Postgres, MinIO, Kafka, Elasticsearch):
+Start infrastructure (Postgres, MinIO, Kafka, Elasticsearch) + services (API + OCR worker):
 
 ```bash
-docker compose up -d
-docker compose ps
+npm run dev:up
 ```
 
 Defaults are in `.env.example`. Create a local `.env` to override.
@@ -21,18 +20,14 @@ Quick checks:
 
 ## API (M1)
 
-Install deps:
+Run API locally (optional; Docker is the default):
 
 ```bash
 npm install
-```
-
-Start infra and run the API:
-
-```bash
-docker compose up -d postgres
 npm run api:dev
 ```
+
+Docker API is exposed on `http://localhost:7080/api`.
 
 Endpoints:
 
@@ -72,6 +67,9 @@ Document APIs (all require Bearer token):
 - `GET http://localhost:7080/api/documents/:id` (requires `DOC_READ`)
 - `GET http://localhost:7080/api/documents/:id/versions` (requires `DOC_READ`)
 - `GET http://localhost:7080/api/documents/versions/:versionId/download-url` (requires `DOC_READ`; returns presigned download URL)
+- `GET http://localhost:7080/api/documents/versions/:versionId/ocr` (requires `DOC_READ`; OCR status)
+- `GET http://localhost:7080/api/documents/versions/:versionId/ocr/pages` (requires `DOC_READ`; OCR text)
+- `POST http://localhost:7080/api/documents/versions/:versionId/ocr/retry` (requires `DOC_UPLOAD`; requeue OCR)
 - `DELETE http://localhost:7080/api/documents/:id` (requires `DOC_DELETE`)
 - `POST http://localhost:7080/api/documents/:id/restore` (requires `DOC_RESTORE`)
 
@@ -82,6 +80,11 @@ Document APIs (all require Bearer token):
 - MinIO Console: `http://localhost:9001`
 - Kafka (Redpanda): `localhost:9094`
 - Elasticsearch: `http://localhost:9200`
+
+### Notes
+
+- If Docker builds fail due to network/DNS issues, run compose with classic build: `DOCKER_BUILDKIT=0 COMPOSE_DOCKER_CLI_BUILD=0 npm run dev:up`
+- When running API in Docker, `S3_ENDPOINT` is internal (`http://minio:9000`) but signed URLs use `S3_PRESIGN_ENDPOINT` (defaults to `http://localhost:9000`).
 
 ## Repo Layout (planned)
 

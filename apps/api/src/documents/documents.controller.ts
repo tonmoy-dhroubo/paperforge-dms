@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Query, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { CurrentUser } from '../auth/decorators/current-user.decorator';
 import { CreateDocumentDto } from './dto/create-document.dto';
@@ -39,6 +39,28 @@ export class DocumentsController {
   @Get('versions/:versionId/download-url')
   downloadUrl(@CurrentUser() user: any, @Param('versionId') versionId: string) {
     return this.documents.getDownloadUrl(user, versionId);
+  }
+
+  @Get('versions/:versionId/ocr')
+  ocrStatus(@CurrentUser() user: any, @Param('versionId') versionId: string) {
+    return this.documents.getOcrStatus(user, versionId);
+  }
+
+  @Get('versions/:versionId/ocr/pages')
+  ocrPages(
+    @CurrentUser() user: any,
+    @Param('versionId') versionId: string,
+    @Query('from') from?: string,
+    @Query('to') to?: string,
+  ) {
+    const fromPage = from ? Number(from) : undefined;
+    const toPage = to ? Number(to) : undefined;
+    return this.documents.listOcrPages(user, versionId, fromPage, toPage);
+  }
+
+  @Post('versions/:versionId/ocr/retry')
+  ocrRetry(@CurrentUser() user: any, @Param('versionId') versionId: string) {
+    return this.documents.retryOcr(user, versionId);
   }
 
   @Delete(':id')

@@ -52,10 +52,18 @@ export class DocumentVersion {
   @Column({ name: 'ocr_attempts', type: 'int', default: 0 })
   ocrAttempts!: number;
 
+  @Column({ name: 'ocr_started_at', type: 'timestamptz', nullable: true })
+  ocrStartedAt!: Date | null;
+
+  @Column({ name: 'ocr_completed_at', type: 'timestamptz', nullable: true })
+  ocrCompletedAt!: Date | null;
+
+  @Column({ name: 'ocr_error', type: 'text', nullable: true })
+  ocrError!: string | null;
+
   @CreateDateColumn({ name: 'created_at' })
   createdAt!: Date;
 
   @UpdateDateColumn({ name: 'updated_at' })
   updatedAt!: Date;
 }
-

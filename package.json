@@ -18,6 +18,7 @@
     "bcrypt": "^5.1.1",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
+    "kafkajs": "^2.2.4",
     "passport": "^0.7.0",
     "passport-jwt": "^4.0.1",
     "pg": "^8.12.0",
@@ -35,13 +36,17 @@
     "typescript": "^5.6.3"
   },
   "scripts": {
-    "dev:up": "docker compose up -d",
+    "dev:up": "DOCKER_BUILDKIT=0 COMPOSE_DOCKER_CLI_BUILD=0 docker compose up -d --build",
     "dev:down": "docker compose down",
     "dev:ps": "docker compose ps",
     "dev:logs": "docker compose logs -f --tail=200",
     "api:dev": "ts-node-dev --respawn --transpile-only --project apps/api/tsconfig.json apps/api/src/main.ts",
     "api:build": "tsc -p apps/api/tsconfig.build.json",
     "api:start": "node dist/apps/api/main.js",
-    "api:typecheck": "tsc -p apps/api/tsconfig.build.json --noEmit"
+    "api:typecheck": "tsc -p apps/api/tsconfig.build.json --noEmit",
+    "worker:dev": "ts-node-dev --respawn --transpile-only --project apps/worker/tsconfig.json apps/worker/src/main.ts",
+    "worker:build": "tsc -p apps/worker/tsconfig.build.json",
+    "worker:start": "node dist/apps/worker/main.js",
+    "worker:typecheck": "tsc -p apps/worker/tsconfig.build.json --noEmit"
   }
 }

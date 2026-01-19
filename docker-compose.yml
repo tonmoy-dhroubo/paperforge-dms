@@ -16,6 +16,7 @@ services:
       - ./db/04_folders_seed.sql:/docker-entrypoint-initdb.d/04_folders_seed.sql:ro
       - ./db/05_documents_schema.sql:/docker-entrypoint-initdb.d/05_documents_schema.sql:ro
       - ./db/06_documents_seed.sql:/docker-entrypoint-initdb.d/06_documents_seed.sql:ro
+      - ./db/07_ocr_schema.sql:/docker-entrypoint-initdb.d/07_ocr_schema.sql:ro
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
       interval: 5s
@@ -102,6 +103,62 @@ services:
       interval: 10s
       timeout: 10s
       retries: 30
+
+  worker-ocr:
+    build:
+      context: .
+      dockerfile: apps/worker/Dockerfile
+      network: host
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-paperforge}:${POSTGRES_PASSWORD:-paperforgepass}@postgres:5432/${POSTGRES_DB:-paperforge}?sslmode=disable
+      S3_ENDPOINT: http://minio:9000
+      S3_REGION: ${S3_REGION:-us-east-1}
+      S3_ACCESS_KEY: ${S3_ACCESS_KEY:-minioadmin}
+      S3_SECRET_KEY: ${S3_SECRET_KEY:-minioadmin123}
+      S3_BUCKET: ${S3_BUCKET:-paperforge}
+      S3_FORCE_PATH_STYLE: ${S3_FORCE_PATH_STYLE:-true}
+      KAFKA_BROKERS: kafka:9092
+      KAFKA_TOPIC_VERSION_CREATED: paperforge.document-version.created
+      KAFKA_TOPIC_OCR_COMPLETED: paperforge.ocr.completed
+      KAFKA_TOPIC_OCR_DLQ: paperforge.ocr.dlq
+    depends_on:
+      - postgres
+      - minio
+      - kafka
+      - kafka-init
+
+  api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+      network: host
+    environment:
+      API_PORT: 7080
+      DATABASE_URL: postgresql://${POSTGRES_USER:-paperforge}:${POSTGRES_PASSWORD:-paperforgepass}@postgres:5432/${POSTGRES_DB:-paperforge}?sslmode=disable
+      JWT_SECRET: ${JWT_SECRET:-paperforge-dev-secret-minimum-32-bytes}
+      JWT_EXPIRATION: ${JWT_EXPIRATION:-1h}
+      JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET:-paperforge-dev-refresh-secret-minimum-32-bytes}
+      JWT_REFRESH_EXPIRATION: ${JWT_REFRESH_EXPIRATION:-7d}
+      AUTH_DEFAULT_ROLE: ${AUTH_DEFAULT_ROLE:-HR}
+      AUTH_FIRST_USER_ADMIN: ${AUTH_FIRST_USER_ADMIN:-true}
+      S3_ENDPOINT: http://minio:9000
+      S3_PRESIGN_ENDPOINT: http://localhost:${MINIO_API_PORT:-9000}
+      S3_REGION: ${S3_REGION:-us-east-1}
+      S3_ACCESS_KEY: ${S3_ACCESS_KEY:-minioadmin}
+      S3_SECRET_KEY: ${S3_SECRET_KEY:-minioadmin123}
+      S3_BUCKET: ${S3_BUCKET:-paperforge}
+      S3_FORCE_PATH_STYLE: ${S3_FORCE_PATH_STYLE:-true}
+      KAFKA_BROKERS: kafka:9092
+      KAFKA_TOPIC_VERSION_CREATED: paperforge.document-version.created
+      KAFKA_TOPIC_OCR_COMPLETED: paperforge.ocr.completed
+      KAFKA_TOPIC_OCR_DLQ: paperforge.ocr.dlq
+    ports:
+      - "${API_PORT:-7080}:7080"
+    depends_on:
+      - postgres
+      - minio
+      - kafka
+      - kafka-init
 
   # Optional (uncomment if you want a UI for Elasticsearch)
   # kibana:

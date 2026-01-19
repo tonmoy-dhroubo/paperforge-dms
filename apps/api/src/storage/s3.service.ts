@@ -6,10 +6,12 @@ import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 @Injectable()
 export class S3Service {
   private readonly client: S3Client;
+  private readonly presignClient: S3Client;
   private readonly bucket: string;
 
   constructor(private readonly config: ConfigService) {
     const endpoint = this.config.get<string>('S3_ENDPOINT') || 'http://localhost:9000';
+    const presignEndpoint = this.config.get<string>('S3_PRESIGN_ENDPOINT') || endpoint;
     const region = this.config.get<string>('S3_REGION') || 'us-east-1';
     const accessKeyId = this.config.get<string>('S3_ACCESS_KEY') || 'minioadmin';
     const secretAccessKey = this.config.get<string>('S3_SECRET_KEY') || 'minioadmin123';
@@ -17,12 +19,14 @@ export class S3Service {
 
     this.bucket = this.config.get<string>('S3_BUCKET') || 'paperforge';
 
-    this.client = new S3Client({
+    const baseConfig = {
       region,
-      endpoint,
       forcePathStyle,
       credentials: { accessKeyId, secretAccessKey },
-    });
+    } as const;
+
+    this.client = new S3Client({ ...baseConfig, endpoint });
+    this.presignClient = new S3Client({ ...baseConfig, endpoint: presignEndpoint });
   }
 
   getBucket() {
@@ -35,7 +39,7 @@ export class S3Service {
       Key: key,
       ContentType: contentType,
     });
-    const url = await getSignedUrl(this.client, command, { expiresIn: expiresInSeconds });
+    const url = await getSignedUrl(this.presignClient, command, { expiresIn: expiresInSeconds });
     return { url, bucket: this.bucket, key, expiresInSeconds, requiredHeaders: { 'Content-Type': contentType } };
   }
 
@@ -44,7 +48,7 @@ export class S3Service {
       Bucket: this.bucket,
       Key: key,
     });
-    const url = await getSignedUrl(this.client, command, { expiresIn: expiresInSeconds });
+    const url = await getSignedUrl(this.presignClient, command, { expiresIn: expiresInSeconds });
     return { url, bucket: this.bucket, key, expiresInSeconds };
   }
 
@@ -57,4 +61,3 @@ export class S3Service {
     };
   }
 }
-

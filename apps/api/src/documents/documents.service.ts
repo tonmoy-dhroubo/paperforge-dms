@@ -3,9 +3,11 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { DataSource, Repository } from 'typeorm';
 import { FolderAccessService } from '../folders/folder-access.service';
 import { S3Service } from '../storage/s3.service';
+import { KafkaProducerService } from '../events/kafka-producer.service';
 import { Document } from './entities/document.entity';
 import { DocumentVersion } from './entities/document-version.entity';
 import { randomUUID } from 'crypto';
+import { DocumentVersionPage } from './entities/document-version-page.entity';
 
 @Injectable()
 export class DocumentsService {
@@ -13,8 +15,10 @@ export class DocumentsService {
     private readonly dataSource: DataSource,
     @InjectRepository(Document) private readonly docRepo: Repository<Document>,
     @InjectRepository(DocumentVersion) private readonly versionRepo: Repository<DocumentVersion>,
+    @InjectRepository(DocumentVersionPage) private readonly pageRepo: Repository<DocumentVersionPage>,
     private readonly folderAccess: FolderAccessService,
     private readonly s3: S3Service,
+    private readonly kafka: KafkaProducerService,
   ) {}
 
   async getDocument(id: string) {
@@ -152,7 +156,12 @@ export class DocumentsService {
     await this.assertDocPermission(doc, user.roles, 'DOC_UPLOAD');
 
     if (version.uploadStatus === 'UPLOADED') {
-      return { versionId: version.id, uploadStatus: version.uploadStatus, sizeBytes: version.sizeBytes };
+      return {
+        versionId: version.id,
+        uploadStatus: version.uploadStatus,
+        sizeBytes: version.sizeBytes,
+        ocrStatus: version.ocrStatus,
+      };
     }
 
     const head = await this.s3.headObject(version.storageKey);
@@ -162,10 +171,28 @@ export class DocumentsService {
     version.uploadedAt = new Date();
     version.sizeBytes = String(head.contentLength);
     if (head.contentType) version.contentType = head.contentType;
+    version.ocrStatus = 'PENDING';
+    version.ocrError = null;
+    version.ocrStartedAt = null;
+    version.ocrCompletedAt = null;
     await this.versionRepo.save(version);
 
     doc.latestVersionId = version.id;
     await this.docRepo.save(doc);
+
+    const topic = process.env.KAFKA_TOPIC_VERSION_CREATED || 'paperforge.document-version.created';
+    let ocrEnqueued = false;
+    let ocrEnqueueError: string | null = null;
+    try {
+      await this.kafka.publish(topic, { versionId: version.id, documentId: doc.id, folderId: doc.folderId });
+      ocrEnqueued = true;
+    } catch (err: any) {
+      const msg = err?.message ? String(err.message) : String(err);
+      ocrEnqueueError = msg;
+      version.ocrStatus = 'FAILED';
+      version.ocrError = `enqueue_failed: ${msg}`;
+      await this.versionRepo.save(version);
+    }
 
     return {
       documentId: doc.id,
@@ -174,7 +201,85 @@ export class DocumentsService {
       versionNumber: version.versionNumber,
       uploadStatus: version.uploadStatus,
       sizeBytes: version.sizeBytes,
+      ocrStatus: version.ocrStatus,
+      ocrEnqueued,
+      ocrEnqueueError,
     };
+  }
+
+  async getOcrStatus(user: { sub: string; roles: string[] }, versionId: string) {
+    const version = await this.versionRepo.findOne({ where: { id: versionId } });
+    if (!version) throw new NotFoundException('Version not found');
+    const doc = await this.getDocument(version.documentId);
+    if (doc.isDeleted) throw new BadRequestException('Document is deleted');
+    await this.assertDocPermission(doc, user.roles, 'DOC_READ');
+
+    return {
+      versionId: version.id,
+      documentId: doc.id,
+      folderId: doc.folderId,
+      uploadStatus: version.uploadStatus,
+      pageCount: version.pageCount,
+      ocrStatus: version.ocrStatus,
+      ocrAttempts: version.ocrAttempts,
+      ocrStartedAt: version.ocrStartedAt,
+      ocrCompletedAt: version.ocrCompletedAt,
+      ocrError: version.ocrError,
+    };
+  }
+
+  async listOcrPages(
+    user: { sub: string; roles: string[] },
+    versionId: string,
+    fromPage?: number,
+    toPage?: number,
+  ) {
+    const version = await this.versionRepo.findOne({ where: { id: versionId } });
+    if (!version) throw new NotFoundException('Version not found');
+    const doc = await this.getDocument(version.documentId);
+    if (doc.isDeleted) throw new BadRequestException('Document is deleted');
+    await this.assertDocPermission(doc, user.roles, 'DOC_READ');
+
+    const where: any = { versionId };
+    if (typeof fromPage === 'number' || typeof toPage === 'number') {
+      const start = typeof fromPage === 'number' ? fromPage : 1;
+      const end = typeof toPage === 'number' ? toPage : start;
+      if (start <= 0 || end <= 0) throw new BadRequestException('from/to must be positive');
+      if (end < start) throw new BadRequestException('to must be >= from');
+
+      const pages = await this.pageRepo
+        .createQueryBuilder('p')
+        .where('p.versionId = :versionId', { versionId })
+        .andWhere('p.pageNumber BETWEEN :start AND :end', { start, end })
+        .orderBy('p.pageNumber', 'ASC')
+        .getMany();
+
+      return { versionId, from: start, to: end, pages };
+    }
+
+    const pages = await this.pageRepo.find({ where, order: { pageNumber: 'ASC' } });
+    return { versionId, pages };
+  }
+
+  async retryOcr(user: { sub: string; roles: string[] }, versionId: string) {
+    const version = await this.versionRepo.findOne({ where: { id: versionId } });
+    if (!version) throw new NotFoundException('Version not found');
+    const doc = await this.getDocument(version.documentId);
+    if (doc.isDeleted) throw new BadRequestException('Document is deleted');
+    await this.assertDocPermission(doc, user.roles, 'DOC_UPLOAD');
+
+    if (version.uploadStatus !== 'UPLOADED') throw new BadRequestException('Version not uploaded');
+
+    version.ocrStatus = 'PENDING';
+    version.ocrError = null;
+    version.ocrStartedAt = null;
+    version.ocrCompletedAt = null;
+    await this.versionRepo.save(version);
+
+    const topic = process.env.KAFKA_TOPIC_VERSION_CREATED || 'paperforge.document-version.created';
+    await this.kafka.publish(topic, { versionId: version.id, documentId: doc.id, folderId: doc.folderId });
+
+    return { versionId: version.id, ocrStatus: version.ocrStatus, enqueued: true };
   }
 
   async getDownloadUrl(user: { sub: string; roles: string[] }, versionId: string) {
