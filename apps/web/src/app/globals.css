@@ -1,8 +1,8 @@
 :root {
   --pf-next-font-body: "IBM Plex Sans";
-  --pf-next-font-display: "Fraunces";
-  --pf-font-body: ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif;
-  --pf-font-display: ui-serif, Georgia, serif;
+  --pf-next-font-display: "IBM Plex Sans";
+  --pf-font-body: "IBM Plex Sans", "Helvetica Neue", Arial, sans-serif;
+  --pf-font-display: "IBM Plex Sans", "Helvetica Neue", Arial, sans-serif;
 
   --pf-radius-sm: 10px;
   --pf-radius-md: 16px;
@@ -38,23 +38,28 @@ body {
   margin: 0;
   color: var(--pf-text);
   font-family: var(--pf-font-body);
-  background: radial-gradient(1200px 700px at 20% 10%, rgba(85, 214, 194, 0.12), transparent 65%),
-    radial-gradient(900px 600px at 80% 30%, rgba(244, 208, 111, 0.10), transparent 60%),
-    radial-gradient(900px 900px at 40% 100%, rgba(255, 255, 255, 0.05), transparent 60%),
-    var(--pf-bg);
+  background-color: var(--pf-bg);
+  background-image:
+    linear-gradient(var(--pf-grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--pf-grid) 1px, transparent 1px),
+    linear-gradient(var(--pf-grid-strong) 1px, transparent 1px),
+    linear-gradient(90deg, var(--pf-grid-strong) 1px, transparent 1px);
+  background-size: 28px 28px, 28px 28px, 140px 140px, 140px 140px;
+  background-position: -1px -1px, -1px -1px, -1px -1px, -1px -1px;
+  overflow-x: hidden;
 }
 
-/* subtle paper-grain without images */
 body::before {
   content: "";
   position: fixed;
-  inset: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
   pointer-events: none;
-  opacity: 0.08;
-  background-image:
-    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.035) 0, rgba(255, 255, 255, 0.035) 1px, transparent 1px, transparent 3px),
-    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.02) 0, rgba(255, 255, 255, 0.02) 1px, transparent 1px, transparent 4px);
-  mix-blend-mode: overlay;
+  background: var(--pf-accent);
+  opacity: 0.95;
+  z-index: 1;
 }
 
 a {
@@ -68,5 +73,5 @@ input {
 }
 
 ::selection {
-  background: rgba(85, 214, 194, 0.25);
+  background: color-mix(in oklab, var(--pf-accent) 25%, transparent);
 }

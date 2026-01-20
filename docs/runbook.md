@@ -17,6 +17,19 @@ npm run dev:up
 npm run dev:down
 ```
 
+## Demo Data Seeding
+
+Seed demo folders + PDFs (uploads to MinIO and commits versions):
+
+```bash
+npm run seed:demo
+```
+
+Options:
+- Custom API base: `npm run seed:demo -- --api http://localhost:7080/api`
+- Wait for OCR completion: `npm run seed:demo -- --wait-ocr`
+- If first user is not ADMIN (DB already has users): `npm run seed:demo -- --promote-admin`
+
 Health checks:
 
 ```bash

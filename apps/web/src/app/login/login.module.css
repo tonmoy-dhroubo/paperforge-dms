@@ -4,7 +4,7 @@
   grid-template-columns: minmax(340px, 560px);
   justify-content: center;
   align-content: center;
-  gap: 20px;
+  gap: 18px;
   padding: 28px 16px;
 }
 
@@ -12,8 +12,8 @@
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
-  gap: 18px;
-  padding: 0 2px;
+  gap: 16px;
+  padding: 2px;
 }
 
 .brand {
@@ -25,46 +25,45 @@
 .mark {
   width: 46px;
   height: 46px;
-  border-radius: 14px;
-  border: 1px solid var(--pf-border);
-  background: linear-gradient(180deg, rgba(85, 214, 194, 0.18), rgba(255, 255, 255, 0.06));
+  border-radius: 8px;
+  border: 1px solid var(--pf-border-strong);
+  background: var(--pf-bg);
   position: relative;
-  box-shadow: var(--pf-shadow-soft);
+  box-shadow: var(--pf-shadow);
   overflow: hidden;
 }
 
 .markDot {
   position: absolute;
-  width: 10px;
-  height: 10px;
-  border-radius: 999px;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
   background: var(--pf-accent);
-  left: 10px;
-  top: 10px;
-  box-shadow: 0 0 0 6px rgba(85, 214, 194, 0.10);
+  left: 9px;
+  top: 9px;
 }
 
 .markLine {
   position: absolute;
-  left: 10px;
-  right: 10px;
-  bottom: 12px;
+  left: 9px;
+  right: 9px;
+  bottom: 11px;
   height: 2px;
-  background: rgba(255, 255, 255, 0.35);
+  background: var(--pf-border-strong);
 }
 
 .title {
   font-family: var(--pf-font-display);
-  font-size: 34px;
-  letter-spacing: 0.2px;
+  font-size: 32px;
+  letter-spacing: 0.04em;
   line-height: 1.05;
 }
 
 .subtitle {
   color: var(--pf-text-dim);
-  font-weight: 700;
+  font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.22em;
   font-size: 11px;
   margin-top: 4px;
 }
@@ -72,7 +71,7 @@
 .meta {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 8px;
   justify-content: flex-end;
 }
 
@@ -90,7 +89,9 @@
   gap: 8px;
   font-weight: 700;
   color: var(--pf-text-dim);
-  letter-spacing: 0.02em;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-size: 12px;
 }
 
 .actions {
@@ -100,25 +101,25 @@
 }
 
 .error {
-  border: 1px solid rgba(255, 91, 91, 0.35);
-  background: rgba(255, 91, 91, 0.08);
+  border: 1px solid color-mix(in oklab, var(--pf-danger) 40%, var(--pf-border));
+  background: color-mix(in oklab, var(--pf-danger) 12%, transparent);
   color: var(--pf-text);
-  border-radius: 14px;
+  border-radius: 6px;
   padding: 10px 12px;
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .rightHint {
   color: var(--pf-text-faint);
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
 }
 
 .mono {
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-  font-size: 12px;
+  font-size: 11px;
 }
 
 .inlineLink {
@@ -127,5 +128,22 @@
   color: var(--pf-accent);
   text-decoration: underline;
   text-underline-offset: 3px;
+  font-weight: 600;
 }
 
+@media (max-width: 760px) {
+  .wrap {
+    grid-template-columns: minmax(280px, 1fr);
+    align-content: start;
+    padding-top: 40px;
+  }
+
+  .hero {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .meta {
+    justify-content: flex-start;
+  }
+}

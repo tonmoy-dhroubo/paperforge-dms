@@ -11,39 +11,41 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
   gap: 16px;
   padding: 14px 16px;
   border-bottom: 1px solid var(--pf-border);
-  background: rgba(14, 17, 20, 0.65);
+  background: color-mix(in oklab, var(--pf-bg) 72%, transparent);
   backdrop-filter: blur(14px);
+  min-width: 0;
 }
 
 .brand {
   display: inline-flex;
   align-items: baseline;
   gap: 10px;
+  min-width: 0;
 }
 
 .brandMark {
-  width: 12px;
-  height: 12px;
-  border-radius: 999px;
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
   background: var(--pf-accent);
-  box-shadow: 0 0 0 8px rgba(85, 214, 194, 0.10);
 }
 
 .brandText {
   font-family: var(--pf-font-display);
-  font-weight: 800;
-  letter-spacing: 0.2px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
   font-size: 20px;
 }
 
 .brandSub {
   color: var(--pf-text-faint);
-  font-weight: 800;
+  font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.22em;
   font-size: 11px;
   margin-left: 2px;
 }
@@ -54,18 +56,21 @@
   gap: 10px;
   flex-wrap: wrap;
   justify-content: flex-end;
+  min-width: 0;
+  flex: 1;
 }
 
 .navLink {
   border: 1px solid var(--pf-border);
-  border-radius: 999px;
+  border-radius: 8px;
   padding: 8px 12px;
-  font-weight: 800;
+  font-weight: 600;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   font-size: 11px;
   color: var(--pf-text-dim);
-  background: rgba(255, 255, 255, 0.04);
+  background: var(--pf-bg-elev);
+  white-space: nowrap;
 }
 
 .navLink:hover {
@@ -83,10 +88,18 @@
 
 .user {
   color: var(--pf-text);
+  max-width: 16ch;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .roles {
   color: var(--pf-text-dim);
+  max-width: 14ch;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .dot {
@@ -101,13 +114,14 @@
   grid-template-columns: 330px 1fr;
   gap: 16px;
   padding: 16px;
+  min-width: 0;
 }
 
 .sidebar {
   border: 1px solid var(--pf-border);
-  border-radius: var(--pf-radius-lg);
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.06), transparent 60%), var(--pf-bg-elev);
-  box-shadow: var(--pf-shadow-soft);
+  border-radius: var(--pf-radius-md);
+  background: var(--pf-bg-elev);
+  box-shadow: var(--pf-shadow);
   overflow: hidden;
   height: calc(100vh - 16px - 16px - 57px);
   position: sticky;
@@ -120,21 +134,21 @@
   display: flex;
   align-items: baseline;
   justify-content: space-between;
-  background: rgba(0, 0, 0, 0.10);
+  background: var(--pf-bg-elev-2);
 }
 
 .sidebarTitle {
   font-family: var(--pf-font-display);
   text-transform: uppercase;
   letter-spacing: 0.18em;
-  font-weight: 800;
+  font-weight: 600;
   font-size: 12px;
   color: var(--pf-text-dim);
 }
 
 .sidebarHint {
   color: var(--pf-text-faint);
-  font-weight: 800;
+  font-weight: 600;
   font-size: 10px;
   text-transform: uppercase;
   letter-spacing: 0.22em;
@@ -152,5 +166,23 @@
     height: auto;
     position: relative;
     top: auto;
+  }
+}
+
+@media (max-width: 520px) {
+  .topbar {
+    padding: 12px 12px;
+    gap: 10px;
+  }
+  .topbarRight {
+    justify-content: flex-start;
+    gap: 8px;
+  }
+  .brandText {
+    font-size: 18px;
+  }
+  .navLink {
+    padding: 7px 10px;
+    font-size: 10px;
   }
 }

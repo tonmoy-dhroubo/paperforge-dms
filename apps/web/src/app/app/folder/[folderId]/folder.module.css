@@ -23,20 +23,20 @@
 }
 
 .uploadNote {
-  border: 1px solid rgba(85, 214, 194, 0.25);
-  background: rgba(85, 214, 194, 0.08);
-  border-radius: 14px;
+  border: 1px solid color-mix(in oklab, var(--pf-accent) 35%, var(--pf-border));
+  background: color-mix(in oklab, var(--pf-accent) 10%, transparent);
+  border-radius: var(--pf-radius-md);
   padding: 10px 12px;
   color: var(--pf-text-dim);
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .uploadProgress {
-  border: 1px dashed rgba(85, 214, 194, 0.35);
-  border-radius: 14px;
+  border: 1px dashed color-mix(in oklab, var(--pf-accent) 35%, var(--pf-border));
+  border-radius: var(--pf-radius-md);
   padding: 8px 12px;
   color: var(--pf-text-dim);
-  font-weight: 800;
+  font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   font-size: 11px;
@@ -52,7 +52,7 @@
 .col {
   border: 1px solid var(--pf-border);
   border-radius: var(--pf-radius-md);
-  background: rgba(255, 255, 255, 0.03);
+  background: var(--pf-bg-elev);
   padding: 12px;
   min-height: 240px;
 }
@@ -61,7 +61,7 @@
   font-family: var(--pf-font-display);
   text-transform: uppercase;
   letter-spacing: 0.18em;
-  font-weight: 800;
+  font-weight: 600;
   font-size: 12px;
   color: var(--pf-text-dim);
   margin-bottom: 10px;
@@ -74,21 +74,21 @@
 
 .docRow {
   border: 1px solid var(--pf-border);
-  border-radius: 14px;
-  background: rgba(255, 255, 255, 0.03);
+  border-radius: var(--pf-radius-md);
+  background: var(--pf-bg);
   padding: 10px 12px;
   display: grid;
   gap: 6px;
 }
 
 .docName {
-  font-weight: 800;
-  letter-spacing: 0.01em;
+  font-weight: 700;
+  letter-spacing: 0.02em;
 }
 
 .docMeta {
   color: var(--pf-text-dim);
-  font-weight: 700;
+  font-weight: 600;
   display: flex;
   gap: 10px;
   align-items: center;
@@ -123,9 +123,9 @@
   justify-content: space-between;
   gap: 10px;
   padding: 8px 10px;
-  border-radius: 12px;
+  border-radius: 8px;
   border: 1px solid var(--pf-border);
-  background: rgba(255, 255, 255, 0.03);
+  background: var(--pf-bg);
 }
 
 .versionLeft,
@@ -139,7 +139,7 @@
 .inlineBtnDanger {
   all: unset;
   cursor: pointer;
-  font-weight: 800;
+  font-weight: 700;
   font-size: 11px;
   text-transform: uppercase;
   letter-spacing: 0.12em;
@@ -160,18 +160,17 @@
 
 .hit {
   border: 1px solid var(--pf-border);
-  border-radius: 16px;
-  background: rgba(255, 255, 255, 0.03);
+  border-radius: var(--pf-radius-md);
+  background: var(--pf-bg-elev);
   padding: 12px 12px;
   display: grid;
   gap: 8px;
-  transition: transform 120ms ease, border-color 120ms ease, background 120ms ease;
+  transition: border-color 120ms ease, background 120ms ease;
 }
 
 .hit:hover {
-  transform: translateY(-1px);
   border-color: var(--pf-border-strong);
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--pf-bg-elev-2);
 }
 
 .hitTop {
@@ -182,13 +181,13 @@
 }
 
 .hitFilename {
-  font-weight: 900;
-  letter-spacing: 0.01em;
+  font-weight: 700;
+  letter-spacing: 0.02em;
 }
 
 .snip {
   color: var(--pf-text-dim);
-  font-weight: 650;
+  font-weight: 500;
   line-height: 1.35;
 }
 
@@ -197,7 +196,7 @@
   align-items: center;
   gap: 8px;
   color: var(--pf-text-faint);
-  font-weight: 800;
+  font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.14em;
   font-size: 10px;
@@ -224,25 +223,25 @@
 }
 
 .error {
-  border: 1px solid rgba(255, 91, 91, 0.35);
-  background: rgba(255, 91, 91, 0.08);
+  border: 1px solid color-mix(in oklab, var(--pf-danger) 40%, var(--pf-border));
+  background: color-mix(in oklab, var(--pf-danger) 12%, transparent);
   color: var(--pf-text);
-  border-radius: 14px;
+  border-radius: var(--pf-radius-md);
   padding: 10px 12px;
-  font-weight: 800;
+  font-weight: 700;
 }
 
 .drop {
   border: 1px dashed var(--pf-border-strong);
   border-radius: var(--pf-radius-md);
   padding: 18px;
-  background: rgba(255, 255, 255, 0.03);
+  background: var(--pf-bg);
   text-align: center;
 }
 
 .dropTitle {
-  font-weight: 900;
-  letter-spacing: 0.02em;
+  font-weight: 700;
+  letter-spacing: 0.04em;
 }
 
 .dropBody {
@@ -253,8 +252,8 @@
 .dropHint {
   margin-top: 10px;
   color: var(--pf-text-faint);
-  font-weight: 800;
-  font-size: 12px;
+  font-weight: 700;
+  font-size: 11px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }

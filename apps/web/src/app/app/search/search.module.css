@@ -11,7 +11,7 @@
   display: grid;
   gap: 6px;
   color: var(--pf-text-dim);
-  font-weight: 800;
+  font-weight: 700;
   font-size: 12px;
   text-transform: uppercase;
   letter-spacing: 0.18em;
@@ -39,8 +39,8 @@
 
 .hit {
   border: 1px solid var(--pf-border);
-  border-radius: 16px;
-  background: rgba(255, 255, 255, 0.03);
+  border-radius: var(--pf-radius-md);
+  background: var(--pf-bg-elev);
   padding: 12px;
   display: grid;
   gap: 8px;
@@ -53,12 +53,13 @@
 }
 
 .hitFilename {
-  font-weight: 900;
+  font-weight: 700;
+  letter-spacing: 0.02em;
 }
 
 .snip {
   color: var(--pf-text-dim);
-  font-weight: 650;
+  font-weight: 500;
 }
 
 .hitMeta {
@@ -66,7 +67,7 @@
   gap: 8px;
   align-items: center;
   color: var(--pf-text-faint);
-  font-weight: 800;
+  font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.14em;
   font-size: 10px;
@@ -86,12 +87,11 @@
 }
 
 .error {
-  border: 1px solid rgba(255, 91, 91, 0.35);
-  background: rgba(255, 91, 91, 0.08);
+  border: 1px solid color-mix(in oklab, var(--pf-danger) 40%, var(--pf-border));
+  background: color-mix(in oklab, var(--pf-danger) 12%, transparent);
   color: var(--pf-text);
-  border-radius: 14px;
+  border-radius: var(--pf-radius-md);
   padding: 10px 12px;
-  font-weight: 800;
+  font-weight: 700;
   margin-top: 12px;
 }
-

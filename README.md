@@ -2,6 +2,36 @@
 
 Phase-1 MVP: internal DMS with nested folders, PDF uploads + versioning, async OCR (Kafka + Tesseract), and full‑text search (Elasticsearch), with strict role-based authorization.
 
+## Quickstart (demo in minutes)
+
+Prereqs:
+- Docker + Docker Compose
+- Node.js + npm
+
+```bash
+git clone git@github.com:tonmoy-dhroubo/paperforge-dms.git
+cd paperforge-dms
+cp .env.example .env
+
+npm install
+npm run dev:up
+
+# Seed demo folders + PDFs (uploads to MinIO and commits versions)
+npm run seed:demo -- --api http://localhost:7080/api --promote-admin
+```
+
+Open: `http://localhost:3000/login`
+
+Demo credentials (after seeding):
+- Email: `paperforge_admin@local.test`
+- Password: `Password123!`
+
+Reset everything (destroys dev data):
+
+```bash
+docker compose down -v
+```
+
 ## Dev (M0)
 
 Start infrastructure (Postgres, MinIO, Kafka, Elasticsearch) + services (API + OCR worker):
@@ -89,6 +119,12 @@ npm run dev:up
 ```
 
 Open: `http://localhost:3000`
+
+Seed demo content (folders + PDFs):
+
+```bash
+npm run seed:demo -- --api http://localhost:7080/api --promote-admin
+```
 
 Local dev (host):
 

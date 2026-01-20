@@ -17,7 +17,7 @@ const ThemeContext = createContext<ThemeContextValue | null>(null);
 const STORAGE_KEY = 'paperforge.theme';
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [themeKey, setThemeKeyState] = useState<ThemeKey>('noir');
+  const [themeKey, setThemeKeyState] = useState<ThemeKey>('paper');
 
   useEffect(() => {
     const saved = (typeof window !== 'undefined' && window.localStorage.getItem(STORAGE_KEY)) || '';
@@ -47,4 +47,3 @@ export function useTheme() {
   if (!ctx) throw new Error('useTheme must be used within ThemeProvider');
   return ctx;
 }
-

@@ -11,7 +11,7 @@
 .hTitle {
   font-family: var(--pf-font-display);
   font-size: 42px;
-  letter-spacing: 0.2px;
+  letter-spacing: 0.06em;
   line-height: 1.02;
 }
 
@@ -37,23 +37,22 @@
 
 .card {
   border: 1px solid var(--pf-border);
-  background: rgba(255, 255, 255, 0.04);
+  background: var(--pf-bg-elev);
   border-radius: var(--pf-radius-md);
   padding: 14px 14px;
-  box-shadow: var(--pf-shadow-soft);
-  transition: transform 120ms ease, border-color 120ms ease, background 120ms ease;
+  box-shadow: var(--pf-shadow);
+  transition: border-color 120ms ease, background 120ms ease;
 }
 
 .card:hover {
-  transform: translateY(-1px);
   border-color: var(--pf-border-strong);
-  background: rgba(255, 255, 255, 0.06);
+  background: var(--pf-bg-elev-2);
 }
 
 .cardTitle {
   font-family: var(--pf-font-display);
-  font-weight: 800;
-  letter-spacing: 0.1px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
   font-size: 18px;
 }
 
@@ -78,4 +77,3 @@
     grid-template-columns: 1fr;
   }
 }
-

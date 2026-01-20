@@ -4,12 +4,14 @@ import { ThemeProvider } from '@/design/theme-provider';
 import '@fontsource/ibm-plex-sans/400.css';
 import '@fontsource/ibm-plex-sans/500.css';
 import '@fontsource/ibm-plex-sans/600.css';
-import '@fontsource/fraunces/600.css';
-import '@fontsource/fraunces/700.css';
+import '@fontsource/ibm-plex-sans/700.css';
 
 export const metadata: Metadata = {
   title: 'Paperforge DMS',
   description: 'Internal document management system',
+  icons: {
+    icon: '/icon.svg',
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
